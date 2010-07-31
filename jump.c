@@ -121,7 +121,7 @@ void delete_bookmark(char *name) {
             p = p->next;
         }
 
-        if (p != NULL) {
+        if (p->next != NULL) {
             d = p->next;
             p->next = d->next;
             free(d);
@@ -173,7 +173,6 @@ int main(int argc, char *argv[]) {
         } else if(strcmp(argv[1], "help") == 0) {
             print_usage();
         } else {
-            printf("-%s- -%s-\n", argv[0], argv[1]);
             exit_with_error("wrong number of arguments.");
         }
     } else if (argc == 3) {
