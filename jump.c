@@ -158,10 +158,22 @@ void load_bookmarks() {
 
 void print_bookmarks() {
     bookmark *p = bookmarks;
+    int i;
 
-    while (p != NULL) {
-        printf("%s %s\n", p->name, p->path);
-        p = p->next;
+    if (p != NULL) {
+        printf("Bookmark             Path\n");
+        printf("---------------------------------------------------------------------------\n");
+        while (p != NULL) {
+            printf("%s", p->name);
+            for (i = 0; i < (20 - strlen(p->name)); i++) {
+                printf(" ");
+            }
+            printf(" %s\n", p->path);
+            p = p->next;
+        }
+        
+    } else {
+        printf("No bookmarks saved.\n");
     }
 }
 
@@ -190,7 +202,6 @@ char *expand_path(char *path_with_bookmark) {
         // the path is just a bookmark
         return find_bookmark(path_with_bookmark)->path;
     }
-    
 }
 
 int main(int argc, char *argv[]) {
