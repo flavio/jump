@@ -160,35 +160,60 @@ void print_bookmarks() {
     bookmark *p = bookmarks;
 
     while (p != NULL) {
-        printf("%s\t%s\n", p->name, p->path);
+        printf("%s %s\n", p->name, p->path);
         p = p->next;
     }
 }
 
+char *expand_path(char *path_with_bookmark) {
+    char *subpath;
+    
+    subpath = strchr(path_with_bookmark, '/');
+    if (subpath != NULL) {
+        // the path contains a subpath (e.g. [bookmark]/sub/path)
+        if (subpath == path_with_bookmark) {
+            // the path is an absolute path (no bookmark, e.g. /absolute/path)
+            return path_with_bookmark;
+        } else {
+            char *bookmark, *expanded_path;
+            
+            bookmark = calloc(subpath - path_with_bookmark, sizeof(char));
+            strncpy(bookmark, path_with_bookmark, (int)(subpath - path_with_bookmark));
+            
+            expanded_path = calloc(strlen(find_bookmark(bookmark)->path), sizeof(char));
+            strcpy(expanded_path, find_bookmark(bookmark)->path);
+            strcat(expanded_path, subpath);
+            
+            return expanded_path;
+        }
+    } else {
+        // the path is just a bookmark
+        return find_bookmark(path_with_bookmark)->path;
+    }
+    
+}
+
 int main(int argc, char *argv[]) {
-    if (argc == 2) {
+    if (argc > 1) {
         if(strcmp(argv[1], "list") == 0) {
             load_bookmarks();
             print_bookmarks();
         } else if(strcmp(argv[1], "help") == 0) {
             print_usage();
-        } else {
-            exit_with_error("wrong number of arguments.");
-        }
-    } else if (argc == 3) {
-        if(strcmp(argv[1], "to") == 0) {
+        } else if(strcmp(argv[1], "to") == 0 && argc > 2) {
             load_bookmarks();
-            printf("%s", find_bookmark(argv[2])->path);
-        } else if(strcmp(argv[1], "add") == 0) {
+            printf("%s", expand_path(argv[2]));
+        } else if(strcmp(argv[1], "add") == 0 && argc > 2) {
             load_bookmarks();
             new_bookmark(argv[2], pwd());
             save_bookmarks();
-        } else if(strcmp(argv[1], "del") == 0) {
+        } else if(strcmp(argv[1], "del") == 0 && argc > 2) {
             load_bookmarks();
             delete_bookmark(argv[2]);
             save_bookmarks();
         } else {
-            exit_with_error("wrong number of arguments.");
+            print_usage();
+            exit(1);
         }
     } else { // wrong number of arguments
         print_usage();
