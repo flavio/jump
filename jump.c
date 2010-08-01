@@ -1,3 +1,22 @@
+/*
+ * Jump, a bookmarking system for the bash shell.
+ * Copyright (c) 2010 Giuseppe Capizzi
+ * mailto: g.capizzi@gmail.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,10 +42,15 @@ void exit_with_error(char *message) {
 }
 
 void print_usage() {
-    printf("...usage...\n");
+    printf("jump to [bookmark]    Jumps to the directory pointed by [bookmark]\n");
+    printf("jump add [bookmark]   Saves the current directory in [bookmark]\n");
+    printf("jump del [bookmark]   Deletes [bookmark]\n");
+    printf("jump list             Prints the list of all saved bookmarks\n");
+    printf("jump help             Displays this message\n");
 }
 
-char *pwd() {
+// Returns the current working directory.
+char *cwd() {
     char *working_dir;
     FILE *fp;
 
@@ -34,7 +58,7 @@ char *pwd() {
 
     fp = popen("pwd", "r");
     if (fp == NULL) {
-        exit_with_error("failed to run pwd");
+        exit_with_error("failed to run pwd.");
     }
     fgets(working_dir, PATH_SIZE, fp);
     pclose(fp);
@@ -42,6 +66,7 @@ char *pwd() {
     return working_dir;
 }
 
+// Returns the path of the bookmarks file in the user home directory.
 char *get_bookmarks_filepath() {
     char *homedir = getenv("HOME");
     char *bookmarks_filepath;
@@ -55,6 +80,7 @@ char *get_bookmarks_filepath() {
     return bookmarks_filepath;
 }
 
+// Adds a bookmark to the list.
 bookmark *add_bookmark(char *name, char *path) {
     bookmark *b;
 
@@ -82,7 +108,7 @@ bookmark *add_bookmark(char *name, char *path) {
     return b;
 }
 
-// find a bookmark in the list
+// Finds a bookmark in the list.
 bookmark *find_bookmark(char *name) {
     bookmark *p = bookmarks;
 
@@ -93,6 +119,8 @@ bookmark *find_bookmark(char *name) {
     return p;
 }
 
+// Creates a new bookmark if it does not exist. If it does already exist,
+// replaces its path with the new one.
 bookmark *new_bookmark(char *name, char *path) {
     bookmark *p;
 
@@ -105,6 +133,7 @@ bookmark *new_bookmark(char *name, char *path) {
     return p;
 }
 
+// Deletes a bookmark from the list.
 void delete_bookmark(char *name) {
     bookmark *d;
 
@@ -131,6 +160,7 @@ void delete_bookmark(char *name) {
     }
 }
 
+// Saves the bookmarks list in the bookmarks file.
 void save_bookmarks() {
     FILE *f;
     bookmark *p = bookmarks;
@@ -145,6 +175,7 @@ void save_bookmarks() {
     }
 }
 
+// Loads the bookmarks list from the bookmarks file.
 void load_bookmarks() {
     FILE *f;
     char name[NAME_SIZE], path[PATH_SIZE];
@@ -156,6 +187,7 @@ void load_bookmarks() {
     }
 }
 
+// Prints the bookmarks list.
 void print_bookmarks() {
     bookmark *p = bookmarks;
     int i;
@@ -177,6 +209,7 @@ void print_bookmarks() {
     }
 }
 
+// Expands paths that could start with a bookmark (e.g. [bookmark]/sub/path)
 char *expand_path(char *path_with_bookmark) {
     char *subpath;
     
@@ -216,7 +249,7 @@ int main(int argc, char *argv[]) {
             printf("%s", expand_path(argv[2]));
         } else if(strcmp(argv[1], "add") == 0 && argc > 2) {
             load_bookmarks();
-            new_bookmark(argv[2], pwd());
+            new_bookmark(argv[2], cwd());
             save_bookmarks();
         } else if(strcmp(argv[1], "del") == 0 && argc > 2) {
             load_bookmarks();
