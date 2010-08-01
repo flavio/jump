@@ -246,7 +246,12 @@ int main(int argc, char *argv[]) {
             print_usage();
         } else if(strcmp(argv[1], "to") == 0 && argc > 2) {
             load_bookmarks();
-            printf("%s", expand_path(argv[2]));
+            
+            char *path;
+            path = expand_path(argv[2]);
+            if (path != NULL) {
+                printf("%s", path);
+            }
         } else if(strcmp(argv[1], "add") == 0 && argc > 2) {
             load_bookmarks();
             new_bookmark(argv[2], cwd());

@@ -62,4 +62,4 @@ have to add to your bash configuration file (e.g. `~/.bash_profile`):
 If you prefer a shorter command to type even less, just rename the function
 with a shorter name (e.g. `function j {...}`).
 
-&copy; 2010 Giuseppe Capizzi
+&copy; 2010 Giuseppe Capizzi (<g.capizzi@gmail.com>)
