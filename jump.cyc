@@ -25,6 +25,8 @@
 #define PATH_SIZE     256
 #define BOOKMARK_SIZE 321
 
+__cyclone_port_on__;
+
 char bookmarks_filename[] = ".jumprc";
 
 typedef struct bookmark_struct bookmark;
@@ -271,3 +273,5 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
+__cyclone_port_off__;
