@@ -23,22 +23,19 @@
 
 #define NAME_SIZE      64
 #define PATH_SIZE     256
-#define BOOKMARK_SIZE 321
-
-__cyclone_port_on__;
 
 char bookmarks_filename[] = ".jumprc";
 
 typedef struct bookmark_struct bookmark;
 struct bookmark_struct {
-    char name[NAME_SIZE];
-    char path[PATH_SIZE];
+    char *name;
+    char *path;
     bookmark *next;
 };
 
 bookmark *bookmarks = NULL;
 
-void exit_with_error(char *message) {
+void exit_with_error(const char ?message) {
     printf("*** ERROR: %s\n", message);
     exit(1);
 }
@@ -52,8 +49,8 @@ void print_usage() {
 }
 
 // Returns the current working directory.
-char *cwd() {
-    char *working_dir;
+char ?cwd() {
+    char ?working_dir;
     FILE *fp;
 
     working_dir = calloc(PATH_SIZE, sizeof(char));
@@ -69,11 +66,11 @@ char *cwd() {
 }
 
 // Returns the path of the bookmarks file in the user home directory.
-char *get_bookmarks_filepath() {
+char ?get_bookmarks_filepath() {
     char *homedir = getenv("HOME");
-    char *bookmarks_filepath;
     int filepath_len = strlen(homedir) + strlen(bookmarks_filename) + 1;
-    
+
+    char ?bookmarks_filepath;
     bookmarks_filepath = calloc(filepath_len, sizeof(char));
     strcpy(bookmarks_filepath, homedir);
     strcat(bookmarks_filepath, "/");
@@ -88,8 +85,8 @@ bookmark *add_bookmark(char *name, char *path) {
 
     // create bookmark node
     b = malloc(sizeof(bookmark));
-    strcpy(b->name, name);
-    strcpy(b->path, path);
+    b->name = strdup(name);
+    b->path = strdup(path);
     b->next = NULL;
 
     // add bookmark to the list
@@ -180,7 +177,9 @@ void save_bookmarks() {
 // Loads the bookmarks list from the bookmarks file.
 void load_bookmarks() {
     FILE *f;
-    char name[NAME_SIZE], path[PATH_SIZE];
+    char *name, *path;
+    name = calloc(NAME_SIZE, sizeof(char));
+    path = calloc(PATH_SIZE, sizeof(char));
 
     if ((f = fopen(get_bookmarks_filepath(), "r")) != NULL) {
         while (fscanf(f, "%s\t%s", name, path) != EOF) {
@@ -213,24 +212,32 @@ void print_bookmarks() {
 
 // Expands paths that could start with a bookmark (e.g. [bookmark]/sub/path)
 char *expand_path(char *path_with_bookmark) {
-    char *subpath;
-    
-    subpath = strchr(path_with_bookmark, '/');
+    const char ?subpath = strchr(path_with_bookmark, '/');
+
     if (subpath != NULL) {
         // the path contains a subpath (e.g. [bookmark]/sub/path)
         if (subpath == path_with_bookmark) {
             // the path is an absolute path (no bookmark, e.g. /absolute/path)
-            return path_with_bookmark;
+            char *pwb = strdup(path_with_bookmark);
+            return pwb;
         } else {
-            char *b = NULL, *expanded_path = NULL;
-            
+            // the path is composed of a bookmark and a subpath
+
+            // copy the bookmark part in a variable
+            char *b;
             b = calloc(subpath - path_with_bookmark, sizeof(char));
             strncpy(b, path_with_bookmark, (int)(subpath - path_with_bookmark));
-            
-            expanded_path = calloc(strlen(find_bookmark(b)->path), sizeof(char));
-            strcpy(expanded_path, find_bookmark(b)->path);
+
+            // find the corresponding path
+            char *b_path;
+            b_path = find_bookmark(b)->path;
+
+            // concatenate the bookmark path with the subpath
+            char *expanded_path;
+            expanded_path = calloc(strlen(b_path) + strlen(subpath), sizeof(char));
+            strcpy(expanded_path, b_path);
             strcat(expanded_path, subpath);
-            
+
             return expanded_path;
         }
     } else {
@@ -239,7 +246,7 @@ char *expand_path(char *path_with_bookmark) {
     }
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char ?argv[]) {
     if (argc > 1) {
         if(strcmp(argv[1], "list") == 0) {
             load_bookmarks();
@@ -273,5 +280,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-
-__cyclone_port_off__;
