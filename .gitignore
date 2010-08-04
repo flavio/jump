@@ -1,1 +1,3 @@
-jump
+jump.gemspec
+pkg/
+rdoc/
