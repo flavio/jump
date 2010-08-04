@@ -1,17 +1,13 @@
-Jump, a bookmarking system for the bash shell.
-==============================================
+= Jump, a bookmarking system for the bash shell.
 
-Introduction
-------------
+== Introduction
 
 Jump is a tool that allows you to quickly change directories in the bash
 shell using bookmarks. Thanks to Jump, you won't have to type those long
 paths anymore. 
-Jump was inspired by go-tool by ActiveState
-(<http://code.google.com/p/go-tool/>).
+Jump was inspired by {go-tool}[http://code.google.com/p/go-tool/] by ActiveState.
 
-Usage
------
+== Usage
 
 Say you often work in a directory with a path like
 `/Users/giuseppe/Work/Projects/MyProject`. With Jump you can add a bookmark
@@ -39,14 +35,12 @@ Don't remember a command? Just type:
 
     $ jump help
 
-Installation
-------------
+== Installation
 
-I'm not shipping compiled binaries at the moment, so you'll have to compile
-Jump from the sources. That's not hard though:
 
-    $ gcc -o jump-bin jump.c
-    $ sudo cp jump-bin /usr/bin
+Jump is packaged as a gem:
+
+    $ gem install jump
 
 In order to be able to change directories, Jump needs a shell driver you'll
 have to add to your bash configuration file (e.g. `~/.bash_profile`):
@@ -62,4 +56,4 @@ have to add to your bash configuration file (e.g. `~/.bash_profile`):
 If you prefer a shorter command to type even less, just rename the function
 with a shorter name (e.g. `function j {...}`).
 
-&copy; 2010 Giuseppe Capizzi (<g.capizzi@gmail.com>)
+(c) 2010 Jump hackers
