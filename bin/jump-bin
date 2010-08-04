@@ -2,44 +2,54 @@
 
 THIS_FILE = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 
-#%w( bookmarks constants version).each do |f|
 require "#{File.dirname(THIS_FILE)}/../lib/bookmarks"
-#end
 
-USAGE = <<EOF
-jump to [bookmark]    Jumps to the directory pointed by [bookmark]
-jump add [bookmark]   Saves the current directory in [bookmark]
-jump del [bookmark]   Deletes [bookmark]
-jump list             Prints the list of all saved bookmarks
-jump help             Displays this message
-EOF
+options = {}
+begin
+  OptionParser.new do |opts|
+    opts.banner = "Usage: example.rb [options]"
 
-VALID_COMMANDS = %w(list to add del)
+    opts.on("-a", "--add BOOKMARK", "Saves the current directory in BOOKMARK") do |v|
+      options[:add] = v
+    end
 
-command = nil
-if ARGV.size > 0 and VALID_COMMANDS.include? ARGV[0]
-  if ARGV[0] != "list" and ARGV.size == 1
-    puts USAGE
-    exit
-  else
-    command = ARGV[0]
-  end
-else
-  puts USAGE
-  exit
+    opts.on("-d", "--del BOOKMARK", "Deletes BOOKMARK") do |v|
+      options[:del] = v
+    end
+
+    opts.on("-l", "--list", "Prints the list of all saved bookmarks") do |v|
+      options[:list] = true
+    end
+
+    opts.on_tail("-h", "--help", "Show this message") do
+      puts opts
+      exit
+    end
+  end.parse!
+rescue OptionParser::InvalidOption
+  STDERR.puts $!
+  exit 1
 end
 
 bookmarks = Bookmarks.new
 
-case command
-  when 'list'
-    puts bookmarks
-  when 'to'
-    puts bookmarks.expand_path(ARGV[1])
-  when 'add'
-    bookmarks.add(Dir.pwd, ARGV[1])
-    bookmarks.save
-  when 'del'
-    bookmarks.del ARGV[1]
-    bookmarks.save
+if options.has_key?(:add)
+  if ARGV.size == 1
+    bookmarks.add(ARGV[0], options[:add])
+  else
+    bookmarks.add(Dir.pwd, options[:all])
+  end
+  bookmarks.save
+end
+
+if options.has_key?(:del)
+  bookmarks.del(options[:del])
+  bookmarks.save
+end
+
+puts bookmarks if options.has_key?(:list)
+
+if ARGV.size == 1
+  expanded_path = bookmarks.expand_path(ARGV[0])
+  puts expanded_path unless expanded_path.nil?
 end
