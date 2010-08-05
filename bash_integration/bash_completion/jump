@@ -22,3 +22,14 @@ _jump()
     return 0
   fi 
 }
+
+function jump {
+  #echo "jump called with $*"
+  if [ ${1:0:1} == "-" ]; then
+    jump-bin $*
+  else
+    cd $(jump-bin $*)
+  fi
+}
+
+complete -F _jump jump
