@@ -29,34 +29,35 @@ end
 
 begin
   require 'jeweler'
-  Jeweler::Tasks.new do |s|
-    s.name        = %q{jump}
-    s.summary     = %q{A bookmarking system for the bash shell}
-    s.description = %q{Jump is a tool that allows you to quickly change
+  Jeweler::Tasks.new do |gem|
+    gem.name        = %q{jump}
+    gem.summary     = %q{A bookmarking system for the bash shell}
+    gem.description = %q{Jump is a tool that allows you to quickly change
                        directories in the bash shell using bookmarks.
                        Thanks to Jump, you won't have to type those long paths anymore.
 
                        Jump was inspired by go-tool by ActiveState
                        (http://code.google.com/p/go-tool/).}
 
-    s.files        = FileList['[A-Z]*', 'lib/**/*.rb', 'test/**/*.rb']
-    s.require_path = 'lib'
-    s.bindir = 'bin'
-    s.executables = ['jump-bin']
-    s.test_files   = Dir[*['test/**/*_test.rb']]
+    gem.files        = FileList['[A-Z]*', 'lib/**/*.rb', 'test/**/*.rb']
+    gem.require_path = 'lib'
+    gem.bindir = 'bin'
+    gem.executables = ['jump-bin']
+    gem.test_files   = Dir[*['test/**/*_test.rb']]
 
-    s.has_rdoc         = true
-    s.extra_rdoc_files = ["README.rdoc"]
-    s.rdoc_options = ['--line-numbers', "--main", "README.rdoc"]
+    gem.has_rdoc         = true
+    gem.extra_rdoc_files = ["README.rdoc"]
+    gem.rdoc_options = ['--line-numbers', "--main", "README.rdoc"]
 
-    s.authors = ["Flavio Castelli", "Giuseppe Capizzi"]
-    s.email   = %w(flavio@castelli.name gcapizzi@gmail.com)
-    s.homepage = "http://github.com/gcapizzi/jump"
+    gem.authors = ["Flavio Castelli", "Giuseppe Capizzi"]
+    gem.email   = %w(flavio@castelli.name gcapizzi@gmail.com)
+    gem.homepage = "http://github.com/gcapizzi/jump"
 
-    s.add_dependency "terminal-table"
-    s.add_development_dependency "fakefs"
+    gem.add_dependency "terminal-table"
+    gem.add_development_dependency "fakefs"
 
-    s.platform = Gem::Platform::RUBY
+    gem.platform = Gem::Platform::RUBY
+    gem.post_install_message = File.read('POST_INSTALL.txt')
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

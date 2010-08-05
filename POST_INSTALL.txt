@@ -1,0 +1,13 @@
+In order to be able to change directories, Jump needs a shell driver you will
+have to add to your bash configuration file (e.g. '~/.bash_profile' or '~/.bashrc'):
+
+    function jump {
+      if [ ${1:0:1} == "-" ]; then
+        jump-bin $*
+      else
+        cd $(jump-bin $*)
+      fi
+    }
+
+If you prefer a shorter command to type even less, just rename the function
+with a shorter name (e.g. 'function j {...}').
