@@ -34,11 +34,7 @@ end
 bookmarks = Bookmarks.new
 
 if options.has_key?(:add)
-  if ARGV.size == 1
-    bookmarks.add(ARGV[0], options[:add])
-  else
-    bookmarks.add(Dir.pwd, options[:all])
-  end
+  bookmarks.add(Dir.pwd, options[:all])
   bookmarks.save
 end
 
