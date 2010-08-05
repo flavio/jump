@@ -44,8 +44,13 @@ if options.has_key?(:del)
 end
 
 puts bookmarks if options.has_key?(:list)
-
 if ARGV.size == 1
   expanded_path = bookmarks.expand_path(ARGV[0])
-  puts expanded_path unless expanded_path.nil?
+  if expanded_path.nil?
+    puts Dir.pwd
+  else
+    puts expanded_path
+  end
+elsif ARGV.size > 1
+  puts Dir.pwd
 end
