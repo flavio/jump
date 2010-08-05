@@ -1,0 +1,24 @@
+_jump()
+{
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts="--help -h --add -a --del -d --list -l"
+
+  if [[ ${prev} == -d || ${prev} == --d* ]] ; then
+    # complete the del command with a list of the available bookmarks
+    local bookmarks=$(jump --list | cut -f2 -d'|' | tail -n +4 | sed '$d' | xargs)
+    COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
+    return 0
+  fi
+
+  if [[ ${cur:0:1} == "-" ]]; then
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    return 0
+  else
+    local bookmarks=$(jump --list | cut -f2 -d'|' | tail -n +4 | sed '$d' | xargs)
+    COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
+    return 0
+  fi 
+}

@@ -1,0 +1,8 @@
+function jump {
+  #echo "jump called with $*"
+  if [ ${1:0:1} == "-" ]; then
+    jump-bin $*
+  else
+    cd $(jump-bin $*)
+  fi
+}
