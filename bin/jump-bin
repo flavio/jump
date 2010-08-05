@@ -34,7 +34,7 @@ end
 bookmarks = Bookmarks.new
 
 if options.has_key?(:add)
-  bookmarks.add(Dir.pwd, options[:all])
+  bookmarks.add(Dir.pwd, options[:add])
   bookmarks.save
 end
 
