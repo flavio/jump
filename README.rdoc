@@ -13,27 +13,27 @@ Say you often work in a directory with a path like
 `/Users/giuseppe/Work/Projects/MyProject`. With Jump you can add a bookmark
 to it:
 
-    $ jump add myproject
+    $ jump --add myproject
 
 From now on you can jump to your project just by typing:
 
-    $ jump to myproject
+    $ jump myproject
 
 You can even append subfolders to the bookmark name!
 
-    $ jump to myproject/src/
+    $ jump myproject/src/
     
 You can take a look at all your bookmarks with the `list` command:
 
-    $ jump list
+    $ jump --list
 
 To delete a bookmark you don't need anymore, use the `delete` command:
 
-    $ jump delete myproject
+    $ jump --del myproject
 
 Don't remember a command? Just type:
 
-    $ jump help
+    $ jump --help
 
 == Installation
 
@@ -42,18 +42,18 @@ Jump is packaged as a gem:
 
     $ gem install jump
 
-In order to be able to change directories, Jump needs a shell driver you'll
-have to add to your bash configuration file (e.g. `~/.bash_profile`):
+In order to be able to change directories, Jump needs a shell driver you will
+have to add to your bash configuration file (e.g. <em>~/.bash_profile</em>):
 
     function jump {
-        if [ "$1" == "to" ] && [ "$2" != "" ]; then 
-            cd $(jump-bin $*)
-        else
-            jump-bin $*
-        fi
+      if [ ${1:0:1} == "-" ]; then
+        jump-bin $*
+      else
+        cd $(jump-bin $*)
+      fi
     }
 
 If you prefer a shorter command to type even less, just rename the function
-with a shorter name (e.g. `function j {...}`).
+with a shorter name (e.g. <em>function j {...}</em>).
 
 (c) 2010 Jump hackers
