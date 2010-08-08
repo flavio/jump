@@ -27,8 +27,15 @@ begin
     end
   end.parse!
 rescue OptionParser::InvalidOption
-  STDERR.puts $!
-  exit 1
+  if $!.args.first == "--bc"
+    # This is an hidden method used by bash_completion
+    bookmarks = Bookmarks.new
+    puts bookmarks.bash_completion(ARGV[0])
+    exit 0
+  else
+    STDERR.puts $!
+    exit 1
+  end
 end
 
 bookmarks = Bookmarks.new
@@ -42,7 +49,7 @@ end
 if options.has_key?(:del)
   if bookmarks.del(options[:del])
     bookmarks.save
-    puts "Bokmark deleted."
+    puts "Bookmark deleted."
   else
     STDERR.puts "Bookmark '#{options[:del]}' has not been deleted, it's unknown."
   end

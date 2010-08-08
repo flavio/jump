@@ -81,6 +81,40 @@ class Bookmarks
     end
   end
 
+  def bash_completion text
+    if text.nil? || text.empty?
+      @bookmarks.keys.sort.join(' ')
+    elsif text.include? '/'
+      bookmark = text[0, text.index('/')]
+      path = text[text.index('/')+1, text.size]
+      if @bookmarks.has_key?(bookmark)
+        entries = []
+        Dir.foreach(@bookmarks[bookmark]) do |filename|
+          next if !path.empty? && (filename =~ /\A#{path}.*/).nil?
+          if File.directory?(File.join(@bookmarks[bookmark], filename))
+            next if filename == "." || filename == ".."
+            entries << File.join(bookmark, filename)
+          end
+        end
+        if entries.empty?
+          text
+        else
+          entries << "#{bookmark}/"
+          entries.sort.join(' ')
+        end
+      else
+        text
+      end
+    else
+      matches = @bookmarks.keys.find_all { |b| b =~ /\A#{text}/ }
+      if matches.empty?
+        text
+      else
+        matches.sort.join(' ')
+      end
+    end
+  end
+
   # Expands paths that could start with a bookmark (e.g. [bookmark]/sub/path)
   def expand_path(path_with_bookmark)
     if path_with_bookmark.index("/").nil?

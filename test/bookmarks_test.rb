@@ -1,5 +1,6 @@
 require "test_helper"
 require 'bookmarks'
+require 'fileutils'
 
 class BookmarksTest < Test::Unit::TestCase
   def setup
@@ -59,9 +60,48 @@ EOF
     FakeFS do
       @bookmarks.save
 
-      assert File.exists? Bookmarks::BOOKMARKS_PATH
+      assert File.exists?(Bookmarks::BOOKMARKS_PATH)
       contents = YAML::load_file Bookmarks::BOOKMARKS_PATH
       assert_equal expected_bookmarks, contents
     end
   end
+
+  def test_bash_completion
+    FakeFS do
+      FileUtils.rm "~/.jumprc"
+      bookmarks = Bookmarks.new
+      bookmarks.add("/home/flavio/templates", "templates")
+      bookmarks.add("/home/flavio/templates", "test")
+      bookmarks.add("/home/flavio/test/rails_app", "rails")
+
+      FileUtils.mkdir_p "/home/flavio/templates/foo/bar"
+      FileUtils.mkdir_p "/home/flavio/test/rails_app/log"
+      FileUtils.mkdir_p "/home/flavio/test/rails_app/locale"
+      FileUtils.mkdir_p "/home/flavio/test/rails_app/app/model"
+      FileUtils.touch "/home/flavio/test/rails_app/local_file"
+
+      # should return all the bookmarks
+      assert_equal "rails templates test", bookmarks.bash_completion(nil)
+      assert_equal "rails templates test", bookmarks.bash_completion('')
+
+      # no matches => should return the same text
+      assert_equal "foo", bookmarks.bash_completion("foo")
+
+      # should complete the text
+      assert_equal "templates test", bookmarks.bash_completion("te")
+      assert_equal "rails", bookmarks.bash_completion("ra")
+
+      # /home/flavio/templates/bar doesn't exist => should return the same text
+      assert_equal "templates/bar", bookmarks.bash_completion("templates/bar")
+
+      # should expand the path
+      assert_equal  "rails/ rails/locale rails/log",
+                    bookmarks.bash_completion("rails/lo")
+
+      # should expand the path
+      assert_equal  "rails/ rails/app rails/locale rails/log",
+                    bookmarks.bash_completion("rails/")
+    end
+  end
+
 end
