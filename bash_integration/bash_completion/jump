@@ -14,7 +14,7 @@ _jump()
   fi
 
   if [[ ${cur:0:1} == "-" ]]; then
-    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    COMPREPLY="$(compgen -W "${opts}" -- ${cur}) "
     return 0
   else
     local bookmarks=$(jump --list | cut -f2 -d'|' | tail -n +4 | sed '$d' | xargs)
@@ -32,4 +32,4 @@ function jump {
   fi
 }
 
-complete -F _jump jump
+complete -o nospace -F _jump jump
