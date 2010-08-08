@@ -60,8 +60,9 @@ class Bookmarks
   def del bookmark
     if @bookmarks.has_key? bookmark
       @bookmarks.delete bookmark
+      true
     else
-      puts "'#{bookmark}' is an unknown bookmark"
+      false
     end
   end
 
