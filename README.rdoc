@@ -27,7 +27,7 @@ You can take a look at all your bookmarks with the `list` command:
 
     $ jump --list
 
-To delete a bookmark you don't need anymore, use the `delete` command:
+To delete a bookmark you don't need anymore, use the `del` command:
 
     $ jump --del myproject
 
@@ -37,13 +37,63 @@ Don't remember a command? Just type:
 
 == Installation
 
-
 Jump is packaged as a gem:
 
     $ gem install jump
 
-In order to be able to change directories, Jump needs a shell driver you will
-have to add to your bash configuration file (e.g. <em>~/.bash_profile</em>):
+== Bash integration
+
+It's strongly recommended to install <i>bash_completion</i>. In this way you will have
+the best user experience.
+
+Linux users can install it using their package manager (apt, zypper, yum, emerge...)
+while OSX users can install it via ports, fink or brew.
+
+When jump is installed you have to create a file called <i>jump</i> containing the
+following text:
+
+    _jump()
+    {
+      local cur prev opts
+      COMPREPLY=()
+      cur="${COMP_WORDS[COMP_CWORD]}"
+      prev="${COMP_WORDS[COMP_CWORD-1]}"
+      opts="--help -h --add -a --del -d --list -l"
+
+      if [[ ${prev} == -d || ${prev} == --d* ]] ; then
+        # complete the del command with a list of the available bookmarks
+        local bookmarks=$(jump --bc)
+        COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
+        return 0
+      fi
+
+      if [[ ${cur:0:1} == "-" ]]; then
+        COMPREPLY="$(compgen -W "${opts}" -- ${cur}) "
+        return 0
+      else
+        local bookmarks=$(jump --bc ${cur})
+        COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
+        return 0
+      fi
+    }
+
+    function jump {
+      #echo "jump called with $*"
+      if [ ${1:0:1} == "-" ]; then
+        jump-bin $*
+      else
+        cd $(jump-bin $*)
+      fi
+    }
+
+    complete -o nospace -F _jump jump
+
+
+The file must be located inside of the <i>bash_completion.d</i> directory, which
+is usually located under <i>/etc/</i>.
+
+If you do not want to install <i>bash_completion</i> then add the following code
+to your bash configuration file (e.g. <i>~/.bash_profile</i> or <i>~/.bashrc</i>):
 
     function jump {
       if [ ${1:0:1} == "-" ]; then
@@ -53,7 +103,6 @@ have to add to your bash configuration file (e.g. <em>~/.bash_profile</em>):
       fi
     }
 
-If you prefer a shorter command to type even less, just rename the function
-with a shorter name (e.g. <em>function j {...}</em>).
+<b>Beware:</b> without bash_completion you won't be able use jump's advanced completion features.
 
-(c) 2010 Jump hackers
+(c) 2010 Flavio Castelli and Giuseppe Capizzi

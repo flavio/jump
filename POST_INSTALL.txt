@@ -1,5 +1,53 @@
-In order to be able to change directories, Jump needs a shell driver you will
-have to add to your bash configuration file (e.g. '~/.bash_profile' or '~/.bashrc'):
+It's strongly recommended to install bash_completion. In this way you will have
+the best user experience.
+Linux users can install it using their package manager (apt, zypper, yum, emerge...),
+while OSX users can install it via ports, fink or brew.
+
+Now that jump is installed you have to create a file called 'jump' containing the
+following text:
+
+    _jump()
+    {
+      local cur prev opts
+      COMPREPLY=()
+      cur="${COMP_WORDS[COMP_CWORD]}"
+      prev="${COMP_WORDS[COMP_CWORD-1]}"
+      opts="--help -h --add -a --del -d --list -l"
+
+      if [[ ${prev} == -d || ${prev} == --d* ]] ; then
+        # complete the del command with a list of the available bookmarks
+        local bookmarks=$(jump --bc)
+        COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
+        return 0
+      fi
+
+      if [[ ${cur:0:1} == "-" ]]; then
+        COMPREPLY="$(compgen -W "${opts}" -- ${cur}) "
+        return 0
+      else
+        local bookmarks=$(jump --bc ${cur})
+        COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
+        return 0
+      fi
+    }
+
+    function jump {
+      #echo "jump called with $*"
+      if [ ${1:0:1} == "-" ]; then
+        jump-bin $*
+      else
+        cd $(jump-bin $*)
+      fi
+    }
+
+    complete -o nospace -F _jump jump
+
+
+The file must be located inside of the 'bash_completion.d' directory, which is
+usually located under /etc/.
+
+If you do not want to install 'bash_completion' then add the following code
+to your bash configuration file (e.g. '~/.bash_profile' or '~/.bashrc'):
 
     function jump {
       if [ ${1:0:1} == "-" ]; then
@@ -8,3 +56,5 @@ have to add to your bash configuration file (e.g. '~/.bash_profile' or '~/.bashr
         cd $(jump-bin $*)
       fi
     }
+
+Beware: without bash_completion you won't be able use jump's advanced completion features.
