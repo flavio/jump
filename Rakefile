@@ -71,7 +71,7 @@ begin
 
     gem.authors = ["Flavio Castelli", "Giuseppe Capizzi"]
     gem.email   = %w(flavio@castelli.name gcapizzi@gmail.com)
-    gem.homepage = "http://github.com/gcapizzi/jump"
+    gem.homepage = "http://github.com/flavio/jump"
 
     gem.add_dependency "terminal-table"
     gem.add_development_dependency "fakefs"
