@@ -35,6 +35,47 @@ Don't remember a command? Just type:
 
     $ jump --help
 
+=== Advanced completion
+
+The tight integration between jump and bash_completion offers advanced completion features.
+
+Suppose you added a bookmark called <i>rails-app</i> pointing to <i>/home/flavio/test/test_app</i>.
+The folder contains the following files:
+  drwxr-xr-x 6 flavio users  4096 2010-08-10 10:38 app
+  drwxr-xr-x 5 flavio users  4096 2010-08-10 10:38 config
+  drwxr-xr-x 2 flavio users  4096 2010-08-10 10:38 db
+  drwxr-xr-x 2 flavio users  4096 2010-08-10 10:38 doc
+  drwxr-xr-x 3 flavio users  4096 2010-08-10 10:38 lib
+  drwxr-xr-x 2 flavio users  4096 2010-08-10 10:38 log
+  drwxr-xr-x 5 flavio users  4096 2010-08-10 10:38 public
+  -rw-r--r-- 1 flavio users   307 2010-08-10 10:38 Rakefile
+  -rw-r--r-- 1 flavio users 10011 2010-08-10 10:38 README
+  drwxr-xr-x 3 flavio users  4096 2010-08-10 10:38 script
+  drwxr-xr-x 7 flavio users  4096 2010-08-10 10:38 test
+  drwxr-xr-x 6 flavio users  4096 2010-08-10 10:38 tmp
+  drwxr-xr-x 3 flavio users  4096 2010-08-10 10:38 vendor
+
+The following completions are available:
+  $ jump ra[TAB]
+is expanded to:
+  $ jump rails-app
+
+While
+  $ jump rails-app/[TAB]
+allows to choose between the following completions:
+  rails-app/        rails-app/config  rails-app/doc     rails-app/log     rails-app/script  rails-app/tmp
+  rails-app/app     rails-app/db      rails-app/lib     rails-app/public  rails-app/test    rails-app/vendor
+
+Typing
+  $ jump rails-app/l[TAB]
+suggests the following completions:
+  rails-app/lib  rails-app/log
+
+Hence
+  $ jump rails-app/lo[TAB]
+is automatically expanded to
+  $ rails-app/log
+
 == Installation
 
 Jump is packaged as a gem:
