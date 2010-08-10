@@ -43,65 +43,27 @@ Jump is packaged as a gem:
 
 == Bash integration
 
+=== Using bash-completion (recommended)
 It's strongly recommended to install <i>bash_completion</i>. In this way you will have
 the best user experience.
 
 Linux users can install it using their package manager (apt, zypper, yum, emerge...)
 while OSX users can install it via ports, fink or brew.
 
-When jump is installed you have to create a file called <i>jump</i> containing the
-following text:
+Execute the following command once jump has been installed:
+  sudo cp `gem contents jump | grep completion` /path_to/bash_completion.d
 
-    _jump()
-    {
-      local cur prev opts
-      COMPREPLY=()
-      cur="${COMP_WORDS[COMP_CWORD]}"
-      prev="${COMP_WORDS[COMP_CWORD-1]}"
-      opts="--help -h --add -a --del -d --list -l"
+The <i>bash_completion.d</i> directory is usually located under <i>/etc/</i>.
+OSX users will find this directory under fink/port/brew installation directory (e.g. <i>/opt/local/etc</i>).
 
-      if [[ ${prev} == -d || ${prev} == --d* ]] ; then
-        # complete the del command with a list of the available bookmarks
-        local bookmarks=$(jump --bc)
-        COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
-        return 0
-      fi
+=== Without bash-completion
 
-      if [[ ${cur:0:1} == "-" ]]; then
-        COMPREPLY="$(compgen -W "${opts}" -- ${cur}) "
-        return 0
-      else
-        local bookmarks=$(jump --bc ${cur})
-        COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
-        return 0
-      fi
-    }
+If you do not want to install <i>bash_completion</i> then execute the following command:
+  cp `gem contents jump | grep shell_driver` ~/.jump_shell_driver
 
-    function jump {
-      #echo "jump called with $*"
-      if [ ${1:0:1} == "-" ]; then
-        jump-bin $*
-      else
-        cd $(jump-bin $*)
-      fi
-    }
+and add the following code to your bash configuration file (e.g. <i>~/.bash_profile</i> or <i>~/.bashrc'</i>:
 
-    complete -o nospace -F _jump jump
-
-
-The file must be located inside of the <i>bash_completion.d</i> directory, which
-is usually located under <i>/etc/</i>.
-
-If you do not want to install <i>bash_completion</i> then add the following code
-to your bash configuration file (e.g. <i>~/.bash_profile</i> or <i>~/.bashrc</i>):
-
-    function jump {
-      if [ ${1:0:1} == "-" ]; then
-        jump-bin $*
-      else
-        cd $(jump-bin $*)
-      fi
-    }
+  source ~/.jump_shell_driver
 
 <b>Beware:</b> without bash_completion you won't be able use jump's advanced completion features.
 
