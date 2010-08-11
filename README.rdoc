@@ -82,6 +82,22 @@ Jump is packaged as a gem:
 
     $ gem install jump
 
+=== Notes for Debian & Ubuntu users
+
+The rubygem package shipped with Debian & Ubuntu acts in a different way.
+Once jump has been installed you have to updated your <i>PATH</i> (unless you
+have already done it).
+
+Execute the following command:
+  $ gem environment
+and take a look at the <i>GEM PATHS</i> section.
+
+You will have something like that:
+  - GEM PATHS:
+    - /var/lib/gems/1.8
+In this case <i>/var/lib/gems/1.8</i> is your <i>GEM PATH</i>.
+Add <i>GEM PATH/bin</i> to your <i>PATH</i>.
+
 == Bash integration
 
 === Using bash-completion (recommended)
@@ -96,6 +112,13 @@ Execute the following command once jump has been installed:
 
 The <i>bash_completion.d</i> directory is usually located under <i>/etc/</i>.
 OSX users will find this directory under fink/port/brew installation directory (e.g. <i>/opt/local/etc</i>).
+
+Note for Ubuntu users: the <tt>gem contents jump</tt> command won't show the
+absolute installation path.
+
+All the files shipped with jump can be found under the following path:
+  [GEM PATH]/gems/jump-[JUMP VERSION]/
+Take a look at the previous section in order to figure out your <i>GEM PATH</i>.
 
 === Without bash-completion
 
