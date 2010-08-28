@@ -53,7 +53,7 @@ begin
     gem.name        = %q{jump}
     gem.summary     = %q{A bookmarking system for bash and zsh shells}
     gem.description = %q{Jump is a tool that allows you to quickly change
-                       directories in the bash shell using bookmarks.
+                       directories in the bash and zsh shells using bookmarks.
                        Thanks to Jump, you won't have to type those long paths anymore.
 
                        Jump was inspired by go-tool by ActiveState
