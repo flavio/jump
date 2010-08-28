@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Keep; if not, write to the
 # Free Software Foundation, Inc.,
-# 51 Franklin Steet, Fifth Floor, Boston, MA 02110-1301, USA.
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 _jump()
 {
@@ -23,9 +23,10 @@ _jump()
   read -cA user_input
   local cur prev 
   reply=()
+
   cur="${user_input[$#user_input]}"
   if [[ $#user_input -gt 2 ]]; then
-    prev="${user_input[$user_input-1]}"
+    prev="${user_input[$#user_input-1]}"
   fi
 
   if [[ ${prev} = "-d" || ${prev} = "--del" ]] ; then
@@ -46,10 +47,12 @@ _jump()
 function jump {
   args=$*
   #echo "jump called with |$args|"
-  if [ ${args[0,1]} = "-" ]; then
-    jump-bin $args
+  if [[ $#args -lt 1 ]]; then
+    jump-bin --help
+  elif [[ ${args[0,1]} = "-" ]]; then
+    jump-bin $*
   else
-    cd $(jump-bin "$@")
+    cd "$(jump-bin $*)"
   fi
 }
 
