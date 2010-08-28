@@ -1,20 +1,30 @@
-It's strongly recommended to install bash_completion. In this way you will have
-the best user experience.
-Linux users can install it using their package manager (apt, zypper, yum, emerge...),
-while OSX users can install it via ports, fink or brew.
+Notes for bash users:
+  It's strongly recommended to install bash_completion. In this way you will have
+  the best user experience.
+  Linux users can install it using their package manager (apt, zypper, yum, emerge...),
+  while OSX users can install it via ports, fink or brew.
 
-Now that jump is installed execute the following command:
-  sudo cp `gem contents jump | grep completion` /path_to/bash_completion.d
+  Now that jump is installed execute the following command:
+    sudo cp `gem contents jump | grep completion` /path_to/bash_completion.d
 
-The 'bash_completion.d' directory is usually located under /etc/.
-OSX users will find this directory under fink/port/brew installation directory (e.g. '/opt/local/etc').
+  The 'bash_completion.d' directory is usually located under /etc/.
+  OSX users will find this directory under fink/port/brew installation directory (e.g. '/opt/local/etc').
 
 
-If you do not want to install 'bash_completion' then execute the following command:
-  cp `gem contents jump | grep shell_driver` ~/.jump_shell_driver
+  If you do not want to install 'bash_completion' then execute the following command:
+    cp `gem contents jump | grep shell_driver` ~/.jump_shell_driver
 
-and add the following code to your bash configuration file (e.g. '~/.bash_profile' or '~/.bashrc'):
+  and add the following code to your bash configuration file (e.g. '~/.bash_profile' or '~/.bashrc'):
 
-  source ~/.jump_shell_driver
+    source ~/.jump_shell_driver
 
-Beware: without bash_completion you won't be able use jump's advanced completion features.
+  Beware: without bash_completion you won't be able use jump's advanced completion features.
+
+Notes for zsh users:
+  Now that jump is installed execute the following command:
+    cp `gem contents jump | grep zsh` ~/.jump_shell_driver
+
+  and add the following code to your .zshrc file:
+
+    source ~/.jump_shell_driver
+

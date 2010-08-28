@@ -1,9 +1,9 @@
-= Jump, a bookmarking system for the bash shell.
+= Jump, a bookmarking system for the bash and zsh shells.
 
 == Introduction
 
-Jump is a tool that allows you to quickly change directories in the bash
-shell using bookmarks. Thanks to Jump, you won't have to type those long
+Jump is a tool that allows you to quickly change directories in the bash and zsh
+shells using bookmarks. Thanks to Jump, you won't have to type those long
 paths anymore. 
 Jump was inspired by {go-tool}[http://code.google.com/p/go-tool/] by ActiveState.
 
@@ -36,8 +36,6 @@ Don't remember a command? Just type:
     $ jump --help
 
 === Advanced completion
-
-The tight integration between jump and bash_completion offers advanced completion features.
 
 Suppose you added a bookmark called <i>rails-app</i> pointing to <i>/home/flavio/test/test_app</i>.
 The folder contains the following files:
@@ -75,6 +73,9 @@ Hence
   $ jump rails-app/lo[TAB]
 is automatically expanded to
   $ rails-app/log
+
+The advanced completion works out of the box for zsh users.
+The bash shell relies on bash_completion.
 
 == Installation
 
@@ -130,5 +131,14 @@ and add the following code to your bash configuration file (e.g. <i>~/.bash_prof
   source ~/.jump_shell_driver
 
 <b>Beware:</b> without bash_completion you won't be able use jump's advanced completion features.
+
+== Zsh integration
+
+After having installed jump execute the following command:
+  cp `gem contents jump | grep zsh` ~/.jump_shell_driver
+
+and add the following code to your .zshrc file:
+
+  source ~/.jump_shell_driver
 
 (c) 2010 Flavio Castelli and Giuseppe Capizzi

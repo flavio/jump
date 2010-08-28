@@ -51,7 +51,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name        = %q{jump}
-    gem.summary     = %q{A bookmarking system for the bash shell}
+    gem.summary     = %q{A bookmarking system for bash and zsh shells}
     gem.description = %q{Jump is a tool that allows you to quickly change
                        directories in the bash shell using bookmarks.
                        Thanks to Jump, you won't have to type those long paths anymore.
@@ -59,7 +59,10 @@ begin
                        Jump was inspired by go-tool by ActiveState
                        (http://code.google.com/p/go-tool/).}
 
-    gem.files        = FileList['[A-Z]*', 'bash_integration/**/*', 'lib/**/*.rb', 'test/**/*.rb']
+    gem.files        = FileList[ '[A-Z]*', 'lib/**/*.rb', 'test/**/*.rb',
+                                 'bash_integration/**/*',
+                                 'zsh_integration/**/*']
+                                 
     gem.require_path = 'lib'
     gem.bindir = 'bin'
     gem.executables = ['jump-bin']
