@@ -43,6 +43,16 @@ begin
       options[:list] = true
     end
 
+    opts.on("--bash-integration", "Prints the path to directory containing the Bash integration files") do
+      puts "#{File.dirname(THIS_FILE)}/../bash_integration"
+      exit
+    end
+
+    opts.on("--zsh-integration", "Prints the path to the ZSH integration file") do
+      puts "#{File.dirname(THIS_FILE)}/../zsh_integration/jump"
+      exit
+    end
+
     opts.on_tail("-h", "--help", "Show this message") do
       puts opts
       exit
