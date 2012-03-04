@@ -109,7 +109,7 @@ Linux users can install it using their package manager (apt, zypper, yum, emerge
 while OSX users can install it via ports, fink or brew.
 
 Execute the following command once jump has been installed:
-  sudo cp `gem contents jump | grep completion` /path_to/bash_completion.d
+  sudo cp `jump-bin --bash-integration`/bash_completion/jump /path_to/bash_completion.d
 
 The <i>bash_completion.d</i> directory is usually located under <i>/etc/</i>.
 OSX users will find this directory under fink/port/brew installation directory (e.g. <i>/opt/local/etc</i>).
