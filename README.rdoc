@@ -123,22 +123,17 @@ Take a look at the previous section in order to figure out your <i>GEM PATH</i>.
 
 === Without bash-completion
 
-If you do not want to install <i>bash_completion</i> then execute the following command:
-  cp `gem contents jump | grep shell_driver` ~/.jump_shell_driver
+If you do not want to install <i>bash_completion</i> then add the following code
+to your bash configuration file (e.g. <i>~/.bash_profile</i> or <i>~/.bashrc'</i>:
 
-and add the following code to your bash configuration file (e.g. <i>~/.bash_profile</i> or <i>~/.bashrc'</i>:
-
-  source ~/.jump_shell_driver
+  source `jump-bin --bash-integration`/shell_driver
 
 <b>Beware:</b> without bash_completion you won't be able use jump's advanced completion features.
 
 == Zsh integration
 
-After having installed jump execute the following command:
-  cp `gem contents jump | grep zsh` ~/.jump_shell_driver
+After having installed jump, add the following code to your .zshrc file:
 
-and add the following code to your .zshrc file:
-
-  source ~/.jump_shell_driver
+  source `jump-bin --zsh-integration`
 
 (c) 2010 Flavio Castelli and Giuseppe Capizzi
