@@ -73,9 +73,12 @@ class Bookmarks
       "No bookmarks saved"
     else
       bookmarks_table = table do |t|
+        t.style = { :border_y => '', :border_i => '-' }
         t.headings = "Bookmark", "Path"
+        home = /^#{File.expand_path ENV['HOME']}/
         @bookmarks.keys.sort.each do |bookmark|
-          t << [bookmark, @bookmarks[bookmark]]
+          simplified = @bookmarks[bookmark].gsub home, '~'
+          t << [bookmark, simplified]
         end
       end
       bookmarks_table.to_s
