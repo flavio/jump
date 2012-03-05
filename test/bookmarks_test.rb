@@ -65,13 +65,13 @@ class BookmarksTest < Test::Unit::TestCase
 
   def test_to_s
     output = <<EOF
-+----------+----------------------+
-| Bookmark | Path                 |
-+----------+----------------------+
-| bar      | /tmp/bar             |
-| complex  | /tmp/foo/bar/complex |
-| foo      | /tmp/foo             |
-+----------+----------------------+
+--------------------------------
+ Bookmark  Path                 
+--------------------------------
+ bar       /tmp/bar             
+ complex   /tmp/foo/bar/complex 
+ foo       /tmp/foo             
+--------------------------------
 EOF
     assert_equal output, @bookmarks.to_s
   end

@@ -19,7 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 require 'rake'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'rake/testtask'
 
 task :default => "test"
@@ -76,7 +76,7 @@ begin
     gem.email   = %w(flavio@castelli.name gcapizzi@gmail.com)
     gem.homepage = "http://github.com/flavio/jump"
 
-    gem.add_dependency "terminal-table"
+    gem.add_dependency "terminal-table", '>= 1.4.4'
     gem.add_development_dependency "fakefs"
 
     gem.platform = Gem::Platform::RUBY
