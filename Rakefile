@@ -68,7 +68,6 @@ begin
     gem.executables = ['jump-bin']
     gem.test_files   = Dir[*['test/**/*_test.rb']]
 
-    gem.has_rdoc         = true
     gem.extra_rdoc_files = ["README.rdoc"]
     gem.rdoc_options = ['--line-numbers', "--main", "README.rdoc"]
 
