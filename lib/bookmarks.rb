@@ -75,10 +75,8 @@ class Bookmarks
       bookmarks_table = table do |t|
         t.style = { :border_y => '', :border_i => '' }
         t.headings = "Bookmark", "Path"
-        home = /^#{File.expand_path ENV['HOME']}/
         @bookmarks.keys.sort.each do |bookmark|
-          simplified = @bookmarks[bookmark].gsub home, '~'
-          t << [bookmark, simplified]
+          t << [bookmark, simplify_path(@bookmarks[bookmark])]
         end
       end
       bookmarks_table.to_s
@@ -128,6 +126,11 @@ class Bookmarks
         matches.sort.join(' ')
       end
     end
+  end
+
+  # Simplifies given path by replacing the user's homedir with ~
+  def simplify_path(path)
+    path.gsub /^#{File.expand_path '~'}/, '~'
   end
 
   # Expands paths that could start with a bookmark (e.g. [bookmark]/sub/path)
