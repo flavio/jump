@@ -26,8 +26,9 @@ class BookmarksTest < Test::Unit::TestCase
   def setup
     @test_bookmarks = { "foo" => "/tmp/foo",
                         "bar" => "/tmp/bar",
-                        "complex" => "/tmp/foo/bar/complex"}
+                        "complex" => "#{File.expand_path '~'}/tmp/foo/bar/complex"}
     FakeFS do
+      FileUtils.mkdir_p(File.expand_path('~'))
       File.open(Bookmarks::BOOKMARKS_PATH, 'w') do |file|
         file << YAML::dump(@test_bookmarks)
       end
@@ -65,15 +66,15 @@ class BookmarksTest < Test::Unit::TestCase
 
   def test_to_s
     output = <<EOF
-+----------+----------------------+
-| Bookmark | Path                 |
-+----------+----------------------+
-| bar      | /tmp/bar             |
-| complex  | /tmp/foo/bar/complex |
-| foo      | /tmp/foo             |
-+----------+----------------------+
+---------------------------------
+ Bookmark  Path                  
+---------------------------------
+ bar       /tmp/bar              
+ complex   ~/tmp/foo/bar/complex 
+ foo       /tmp/foo              
+---------------------------------
 EOF
-    assert_equal output, @bookmarks.to_s
+    assert_equal output.chomp, @bookmarks.to_s
   end
 
   def test_save
