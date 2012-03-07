@@ -1,3 +1,9 @@
+Wed Mar 07 11:15:01 CET 2012  Flavio Castelli <flavio@castelli.name>
+
+	Version 0.3.0:
+	* better output when listing bookmarks.
+	* added --bash-integration and --zsh-integration help tasks.
+
 Sat Aug 28 09:04:30 CEST 2010  Flavio Castelli  <flavio@castelli.name>
 
 	* added support to zsh
