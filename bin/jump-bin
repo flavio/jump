@@ -108,7 +108,6 @@ if expanded_path.nil?
   STDERR.puts "Unknown bookmark: '#{ARGV[0]}'."
   exit 42
 else
-  STDERR.puts "found #{expanded_path}"
   puts expanded_path
 end
 
