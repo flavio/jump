@@ -28,7 +28,7 @@ require 'optparse'
 
 options = {}
 begin
-  OptionParser.new do |opts|
+  opts = OptionParser.new do |opts|
     opts.banner = "Usage: jump [options] [BOOKMARK[/path/to/subfolder]]"
 
     opts.on("-a", "--add BOOKMARK", "Saves the current directory in BOOKMARK") do |v|
@@ -57,7 +57,8 @@ begin
       puts opts
       exit
     end
-  end.parse!
+  end
+  opts.parse!
 rescue OptionParser::InvalidOption
   if $!.args.first == "--bc"
     # This is an hidden method used by bash_completion
@@ -71,6 +72,8 @@ rescue OptionParser::InvalidOption
 end
 
 bookmarks = Bookmarks.new
+
+### handle options, if present
 
 if options.has_key?(:add)
   bookmarks.add(Dir.pwd, options[:add])
@@ -87,16 +90,24 @@ if options.has_key?(:del)
   end
 end
 
-puts bookmarks if options.has_key?(:list)
-if ARGV.size == 1
-  expanded_path = bookmarks.expand_path(ARGV[0])
-  if expanded_path.nil?
-    STDERR.puts "Unknown bookmark: '#{ARGV[0]}'."
-    puts Dir.pwd
-  else
-    puts expanded_path
-  end
-elsif ARGV.size > 1
-  STDERR.puts "Wrong arguments."
-  puts Dir.pwd
+if options.has_key?(:list)
+  puts bookmarks
 end
+
+exit if ARGV.empty?
+
+### remaining argument(s) must be a single bookmark
+
+if ARGV.size > 1
+  STDERR.puts opts
+  exit 1
+end
+
+expanded_path = bookmarks.expand_path(ARGV[0])
+if expanded_path.nil?
+  STDERR.puts "Unknown bookmark: '#{ARGV[0]}'."
+  exit 42
+else
+  puts expanded_path
+end
+

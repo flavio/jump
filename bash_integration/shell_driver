@@ -19,12 +19,15 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 function jump {
+  local dest
   #echo "jump called with $*"
   if [ $# -lt 1 ]; then
     jump-bin --help
   elif [ ${1:0:1} == "-" ]; then
     jump-bin $*
   else
-    cd "$(jump-bin $*)"
+    dest="$(jump-bin $*)" && cd "$dest"
   fi
 }
+
+# vim: ft=sh et sw=2 ts=2 sts=2
