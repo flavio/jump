@@ -83,7 +83,7 @@ class Bookmarks
     end
   end
 
-  def bash_completion text
+  def complete text
     if text.nil? || text.empty?
       # nothing is provided -> return all the bookmarks
       @bookmarks.keys.sort.join(' ')
