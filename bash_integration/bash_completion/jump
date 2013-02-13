@@ -28,7 +28,7 @@ _jump()
 
   if [[ ${prev} == "-d" || ${prev} == "--del" ]] ; then
     # complete the del command with a list of the available bookmarks
-    local bookmarks=$(jump --bc)
+    local bookmarks=$(jump --complete)
     COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
     return 0
   fi
@@ -37,7 +37,7 @@ _jump()
     COMPREPLY="$(compgen -W "${opts}" -- ${cur}) "
     return 0
   else
-    local bookmarks=$(jump --bc ${cur})
+    local bookmarks=$(jump --complete ${cur})
     COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
     return 0
   fi 
