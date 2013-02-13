@@ -94,7 +94,7 @@ EOF
     end
   end
 
-  def test_bash_completion
+  def test_shell_completion
     FakeFS do
       FileUtils.rm "~/.jumprc"
       bookmarks = Bookmarks.new
@@ -109,31 +109,31 @@ EOF
       FileUtils.touch "/home/flavio/test/rails_app/local_file"
 
       # should handle absolute paths
-      assert_equal "/rails", bookmarks.bash_completion('/rails')
+      assert_equal "/rails", bookmarks.complete('/rails')
 
       # should return all the bookmarks
-      assert_equal "rails templates test", bookmarks.bash_completion(nil)
-      assert_equal "rails templates test", bookmarks.bash_completion('')
+      assert_equal "rails templates test", bookmarks.complete(nil)
+      assert_equal "rails templates test", bookmarks.complete('')
 
       # no matches => should return the same text
-      assert_equal "foo", bookmarks.bash_completion("foo")
+      assert_equal "foo", bookmarks.complete("foo")
 
       # should complete the text
-      assert_equal "templates test", bookmarks.bash_completion("te")
-      assert_equal "rails", bookmarks.bash_completion("ra")
+      assert_equal "templates test", bookmarks.complete("te")
+      assert_equal "rails", bookmarks.complete("ra")
 
       # /home/flavio/templates/bar doesn't exist => should return the same text
-      assert_equal "templates/bar", bookmarks.bash_completion("templates/bar")
+      assert_equal "templates/bar", bookmarks.complete("templates/bar")
       assert_equal( "templates/bar/1/2",
-                    bookmarks.bash_completion("templates/bar/1/2"))
+                    bookmarks.complete("templates/bar/1/2"))
 
       # should expand the path
       assert_equal  "rails/ rails/locale rails/log",
-                    bookmarks.bash_completion("rails/lo")
+                    bookmarks.complete("rails/lo")
 
       # should expand the path
       assert_equal  "rails/ rails/app rails/locale rails/log",
-                    bookmarks.bash_completion("rails/")
+                    bookmarks.complete("rails/")
     end
   end
 
