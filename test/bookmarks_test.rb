@@ -23,6 +23,7 @@ require 'bookmarks'
 require 'fileutils'
 
 class BookmarksTest < Test::Unit::TestCase
+
   def setup
     @test_bookmarks = { "foo" => "/tmp/foo",
                         "bar" => "/tmp/bar",
@@ -35,7 +36,6 @@ class BookmarksTest < Test::Unit::TestCase
 
       @bookmarks = Bookmarks.new
     end
-
   end
 
   def test_expand_path
@@ -93,48 +93,5 @@ EOF
       assert_equal expected_bookmarks, contents
     end
   end
-
-  def test_shell_completion
-    FakeFS do
-      FileUtils.rm "~/.jumprc"
-      bookmarks = Bookmarks.new
-      bookmarks.add("/home/flavio/templates", "templates")
-      bookmarks.add("/home/flavio/templates", "test")
-      bookmarks.add("/home/flavio/test/rails_app", "rails")
-
-      FileUtils.mkdir_p "/home/flavio/templates/foo/bar"
-      FileUtils.mkdir_p "/home/flavio/test/rails_app/log"
-      FileUtils.mkdir_p "/home/flavio/test/rails_app/locale"
-      FileUtils.mkdir_p "/home/flavio/test/rails_app/app/model"
-      FileUtils.touch "/home/flavio/test/rails_app/local_file"
-
-      # should handle absolute paths
-      assert_equal "/rails", bookmarks.complete('/rails')
-
-      # should return all the bookmarks
-      assert_equal "rails templates test", bookmarks.complete(nil)
-      assert_equal "rails templates test", bookmarks.complete('')
-
-      # no matches => should return the same text
-      assert_equal "foo", bookmarks.complete("foo")
-
-      # should complete the text
-      assert_equal "templates test", bookmarks.complete("te")
-      assert_equal "rails", bookmarks.complete("ra")
-
-      # /home/flavio/templates/bar doesn't exist => should return the same text
-      assert_equal "templates/bar", bookmarks.complete("templates/bar")
-      assert_equal( "templates/bar/1/2",
-                    bookmarks.complete("templates/bar/1/2"))
-
-      # should expand the path
-      assert_equal  "rails/ rails/locale rails/log",
-                    bookmarks.complete("rails/lo")
-
-      # should expand the path
-      assert_equal  "rails/ rails/app rails/locale rails/log",
-                    bookmarks.complete("rails/")
-    end
-  end
-
 end
+
