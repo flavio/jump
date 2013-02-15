@@ -60,10 +60,10 @@ begin
   end
   opts.parse!
 rescue OptionParser::InvalidOption
-  if $!.args.first == "--bc"
-    # This is an hidden method used by bash_completion
+  if $!.args.first == "--complete"
+    # This is an hidden method used by the shell completion
     bookmarks = Bookmarks.new
-    puts bookmarks.bash_completion(ARGV[0])
+    puts bookmarks.complete(ARGV[0])
     exit 0
   else
     STDERR.puts $!
