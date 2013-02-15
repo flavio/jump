@@ -33,6 +33,7 @@ class BookmarkCompletionTest < Test::Unit::TestCase
       @bookmarks.add("/home/flavio/test/another_rails_app", "rails2")
 
       FileUtils.mkdir_p "/home/flavio/templates/foo/bar"
+      FileUtils.mkdir_p "/home/flavio/templates/baz"
       FileUtils.mkdir_p "/home/flavio/test/rails_app/log"
       FileUtils.mkdir_p "/home/flavio/test/rails_app/locale"
       FileUtils.mkdir_p "/home/flavio/test/rails_app/app/model"
@@ -60,10 +61,16 @@ class BookmarkCompletionTest < Test::Unit::TestCase
     end
   end
 
+  def test_no_matches_with_suffix
+    FakeFS do
+      assert_equal "foo/meh/zzz", @bookmarks.complete("foo/meh/zzz")
+    end
+  end
+
   def test_prefix
     FakeFS do
-      assert_equal "templates test", @bookmarks.complete("te")
-      assert_equal "rails rails2", @bookmarks.complete("ra")
+      assert_equal "te templates test", @bookmarks.complete("te")
+      assert_equal "ra rails rails2", @bookmarks.complete("ra")
     end
   end
 
@@ -85,7 +92,7 @@ class BookmarkCompletionTest < Test::Unit::TestCase
 
   def test_completes_suffix
     FakeFS do
-      assert_equal "rails/ rails/locale rails/log",
+      assert_equal "rails/lo rails/locale rails/log",
                    @bookmarks.complete("rails/lo")
     end
   end

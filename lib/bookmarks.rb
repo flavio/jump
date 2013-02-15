@@ -83,49 +83,32 @@ class Bookmarks
     end
   end
 
-  def complete text
-    if text.nil? || text.empty?
-      # nothing is provided -> return all the bookmarks
-      @bookmarks.keys.sort.join(' ')
-    elsif text.include? '/'
-      if text.index('/') == 0
-        # this is an absolute path (eg: /foo)
-        return text
-      end
+  def sorted_bookmarks()  sorted_list @bookmarks.keys  end
+  def sorted_list(terms)  terms.sort.join ' '  end
 
-      # [bookmark]/path
-      bookmark = text[0, text.index('/')]
-      path = text[text.index('/')+1, text.size]
-      if @bookmarks.has_key?(bookmark)
-        # this is a known bookmark
-        entries = []
-        Dir.foreach(@bookmarks[bookmark]) do |filename|
-          next if !path.empty? && (filename =~ /\A#{path}.*/).nil?
-          if File.directory?(File.join(@bookmarks[bookmark], filename))
-            next if filename == "." || filename == ".."
-            entries << File.join(bookmark, filename)
-          end
-        end
+  # Provide a list of completion options, starting with given prefix
+  def complete prefix
+    # Special cases:
+    #   - nothing is provided: return all the bookmarks
+    #   - absolute path: don't complete
+    return sorted_bookmarks if prefix.nil? || prefix.empty?
+    return prefix if prefix.start_with? File::SEPARATOR
 
-        if entries.empty?
-          text
-        else
-          entries << "#{bookmark}/"
-          entries.sort.join(' ')
-        end
-      else
-        # this is an unknown bookmark
-        text
-      end
-    else
-      # text could match one of the bookmarks
-      matches = @bookmarks.keys.find_all { |b| b =~ /\A#{text}/ }
-      if matches.empty?
-        text
-      else
-        matches.sort.join(' ')
+    bookmark, path = prefix.split File::SEPARATOR, 2 # File.split only does path/basename
+
+    completions = [ prefix ]
+    if path.nil?
+      # still in 1st element, could match several bookmarks
+      completions += @bookmarks.keys.find_all { |b| b.start_with? prefix }
+    elsif @bookmarks.has_key?(bookmark)
+      # bookmark known, complete further
+      completions += Dir.chdir(@bookmarks[bookmark]) do
+        Dir.glob(["#{path}*"]) \
+          .select { |f| File.directory? f } \
+          .collect { |f| File.join bookmark, f }
       end
     end
+    sorted_list completions
   end
 
   # Simplifies given path by replacing the user's homedir with ~
