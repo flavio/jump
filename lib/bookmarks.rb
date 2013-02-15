@@ -96,7 +96,7 @@ class Bookmarks
 
     bookmark, path = prefix.split File::SEPARATOR, 2 # File.split only does path/basename
 
-    completions = [ prefix ]
+    completions = [  ]
     if path.nil?
       # still in 1st element, could match several bookmarks
       completions += @bookmarks.keys.find_all { |b| b.start_with? prefix }
@@ -108,6 +108,8 @@ class Bookmarks
           .collect { |f| File.join bookmark, f }
       end
     end
+    completions.map! { |d| d + File::SEPARATOR }
+    completions << prefix if completions.empty?
     sorted_list completions
   end
 

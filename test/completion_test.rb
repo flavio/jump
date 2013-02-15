@@ -69,8 +69,8 @@ class BookmarkCompletionTest < Test::Unit::TestCase
 
   def test_prefix
     FakeFS do
-      assert_equal "te templates test", @bookmarks.complete("te")
-      assert_equal "ra rails rails2", @bookmarks.complete("ra")
+      assert_equal "templates/ test/", @bookmarks.complete("te")
+      assert_equal "rails/ rails2/", @bookmarks.complete("ra")
     end
   end
 
@@ -85,21 +85,21 @@ class BookmarkCompletionTest < Test::Unit::TestCase
 
   def test_completes_children_after_separator
     FakeFS do
-      assert_equal "rails/ rails/app rails/locale rails/log",
+      assert_equal "rails/app/ rails/locale/ rails/log/",
                    @bookmarks.complete("rails/")
     end
   end
 
   def test_completes_suffix
     FakeFS do
-      assert_equal "rails/lo rails/locale rails/log",
+      assert_equal "rails/locale/ rails/log/",
                    @bookmarks.complete("rails/lo")
     end
   end
 
   def test_completes_suffix_path
     FakeFS do
-      assert_equal "rails/app/ rails/app/model",
+      assert_equal "rails/app/model/",
                    @bookmarks.complete("rails/app/")
     end
   end
