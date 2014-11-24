@@ -23,16 +23,23 @@ require 'yaml'
 require 'terminal-table/import'
 
 class Bookmarks
-  BOOKMARKS_PATH = File.expand_path "~/.jumprc"
-
+  @@BOOKMARKS_PATH = ""
   def initialize
+    rcfiles = [ "#{ENV["XDG_CONFIG_HOME"]}/jumprc", "~/.jumprc" ]
+    rcfiles.each do |_rcfile|
+      rcfile = File.expand_path _rcfile
+      if ( File.exists?(rcfile) )
+        @@BOOKMARKS_PATH = rcfile
+        break
+      end
+    end
     # Loads the bookmarks list from the bookmarks file.
     begin
-      @bookmarks = YAML::load_file(BOOKMARKS_PATH)
+      @bookmarks = YAML::load_file(@@BOOKMARKS_PATH)
     rescue Errno::ENOENT
       @bookmarks = {}
     rescue
-      raise "Can't load configuration file"
+      raise "Can't load configuration file #{@@BOOKMARKS_PATH}"
     end
   end
 
@@ -44,7 +51,7 @@ class Bookmarks
   # Saves the bookmarks list in the bookmarks file.
   def save
     begin
-      File.open(BOOKMARKS_PATH, 'w') do |file|
+      File.open(@@BOOKMARKS_PATH, 'w') do |file|
         file << YAML::dump(@bookmarks)
       end
     rescue
