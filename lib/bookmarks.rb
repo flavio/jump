@@ -32,7 +32,7 @@ class Bookmarks
     rescue Errno::ENOENT
       @bookmarks = {}
     rescue
-      raise "Can't save configuration file"
+      raise "Can't load configuration file"
     end
   end
 
