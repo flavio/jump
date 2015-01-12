@@ -62,7 +62,7 @@ begin
     gem.files        = FileList[ '[A-Z]*', 'lib/**/*.rb', 'test/**/*.rb',
                                  'bash_integration/**/*',
                                  'zsh_integration/**/*']
-                                 
+    gem.license      = ["MIT"]
     gem.require_path = 'lib'
     gem.bindir = 'bin'
     gem.executables = ['jump-bin']
