@@ -29,7 +29,7 @@ _jump()
     prev="${user_input[$#user_input-1]}"
   fi
 
-  if [[ ${prev} = "-d" || ${prev} = "--del" ]] ; then
+  if [[ ${prev} = "-p" || ${prev} = "--path" || ${prev} = "-d" || ${prev} = "--del" ]] ; then
     # complete the del command with a list of the available bookmarks
     reply=( $(jump-bin --complete) )
     return 0
@@ -47,11 +47,13 @@ _jump()
 function jump {
   local args dest
   args=$*
-  #echo "jump called with |$args|"
   if [[ $#args -lt 1 ]]; then
     jump-bin --help
   elif [[ ${args[0,1]} = "-" ]]; then
+  # Case when --list is passed in
     jump-bin $*
+  elif [[ ${args[0,2]} = "-p" || ${args[0,6]} = "--path" ]]; then
+    dest="$(jump-bin $*)"
   else
     dest="$(jump-bin $*)" && cd "$dest"
   fi
