@@ -26,7 +26,7 @@ _jump()
   prev="${COMP_WORDS[COMP_CWORD-1]}"
   opts="--help -h --add -a --del -d --list -l"
 
-  if [[ ${prev} == "-d" || ${prev} == "--del" ]] ; then
+  if [[ ${prev} == "-d" || ${prev} == "--del" || ${prev} == "-p" || ${prev} == "--path" ]] ; then
     # complete the del command with a list of the available bookmarks
     local bookmarks=$(jump --complete)
     COMPREPLY=( $(compgen -W "${bookmarks}" -- ${cur}) )
