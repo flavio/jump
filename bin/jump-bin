@@ -43,6 +43,10 @@ begin
       options[:list] = true
     end
 
+    opts.on("-p", "--path", "Prints the path of the bookmark") do |v|
+      options[:path] = v
+    end
+
     opts.on("--bash-integration", "Prints the path to directory containing the Bash integration files") do
       puts "#{File.dirname(THIS_FILE)}/../bash_integration"
       exit
