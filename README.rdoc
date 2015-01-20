@@ -78,8 +78,8 @@ Hence
 is automatically expanded to
   $ rails-app/log
 
-`jump` also allows users to print out the path of a bookmark. This adds a flavor of
-new commands in conjunction to `jump`. For example, `jump` allows a user to execute
+jump also allows users to print out the path of a bookmark. This adds a flavor of
+new commands in conjunction to jump. For example, jump allows a user to execute
 the following commands:
   $ ls `jump -p rails-app`
   $ cp `jump -p rails-app/Rakefile` .
