@@ -31,6 +31,10 @@ To delete a bookmark you don't need anymore, use the `del` command:
 
     $ jump --del myproject
 
+To show the path to a bookmark, use the `path` command:
+
+    $ jump --path myproject
+
 Don't remember a command? Just type:
 
     $ jump --help
@@ -73,6 +77,13 @@ Hence
   $ jump rails-app/lo[TAB]
 is automatically expanded to
   $ rails-app/log
+
+jump also allows users to print out the path of a bookmark. This adds a flavor of
+new commands in conjunction to jump. For example, jump allows a user to execute
+the following commands:
+  $ ls `jump -p rails-app`
+  $ cp `jump -p rails-app/Rakefile` .
+  $ vim `jump -p rails-app/README`
 
 The advanced completion works out of the box for zsh users.
 The bash shell relies on bash_completion.
