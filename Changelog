@@ -1,3 +1,9 @@
+Wed Jan 21 14:32:36 CET 2015  Flavio Castelli <flavio@castelli.name>
+
+	Version 0.4.0:
+	* Added "--path" flag: this makes possible new creative uses of
+		jump like: "vim `jump -p rails-app/README`".
+
 Mon Jan 12 12:25:15 CET 2015  Flavio Castelli <flavio@castelli.name>
 
 	Version 0.3.3:
