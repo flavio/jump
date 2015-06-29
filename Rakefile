@@ -75,7 +75,7 @@ begin
     gem.email   = %w(flavio@castelli.name gcapizzi@gmail.com)
     gem.homepage = "http://github.com/flavio/jump"
 
-    gem.add_runtime_dependency "terminal-table", '~> 1.4'
+    gem.add_runtime_dependency "terminal-table", '~> 1.4.5'
     gem.add_development_dependency "fakefs"
 
     gem.platform = Gem::Platform::RUBY
