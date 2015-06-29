@@ -1,3 +1,8 @@
+Mon Jun 29 16:57:36 CEST 2015  Flavio Castelli <flavio@castelli.name>
+
+	Version 0.4.1:
+		* prevent incompatibility with recent versions of terminal-table
+
 Wed Jan 21 14:32:36 CET 2015  Flavio Castelli <flavio@castelli.name>
 
 	Version 0.4.0:
