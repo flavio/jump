@@ -114,7 +114,7 @@ Later versions of Debian/Ubuntu don't have a bin/ directory under the gems direc
   /var/lib/gems/2.3.0/gems/jump-0.4.1/bin
 Additonally you'll want to run the following within the bin/ directory so you can run
 <i>jump</i> instead of <i>jump-bin</i>
-  $ ln -s jump-bin jump
+  $ cp jump-bin jump
 
 == Bash integration
 
