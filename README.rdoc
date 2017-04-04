@@ -110,6 +110,12 @@ You will have something like that:
 In this case <i>/var/lib/gems/1.8</i> is your <i>GEM PATH</i>.
 Add <i>GEM PATH/bin</i> to your <i>PATH</i>.
 
+Later versions of Debian/Ubuntu don't have a bin/ directory under the gems directory, so you should add the explicit jump gem directory to your path, ie:
+  /var/lib/gems/2.3.0/gems/jump-0.4.1/bin
+Additonally you'll want to run the following within the bin/ directory so you can run
+<i>jump</i> instead of <i>jump-bin</i>
+  $ cp jump-bin jump
+
 == Bash integration
 
 === Using bash-completion (recommended)
